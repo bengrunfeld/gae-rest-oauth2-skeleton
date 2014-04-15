@@ -1,0 +1,6 @@
+*.pyc
+.*py.swp
+.*cron.yaml.swp
+.DS_Store
+.build
+lib
