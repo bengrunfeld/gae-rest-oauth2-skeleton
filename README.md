@@ -1,22 +1,22 @@
 # Google AppEngine REST OAuth2 Skeleton
 
-This is a skeleton app designed for Google AppEngine that illustrates how to go through the OAuth 2.0 process and connect to a RESTful API like GitHub's.
+This is a skeleton app designed for **Google AppEngine** that illustrates how to go through the **OAuth 2.0** process and connect to a **RESTful API** like GitHub's.
 
 ## Background
 
-Personally, I found it extremely challenging to put together the pieces of GAE and OAuth 2.0, and then connect to a RESTful app. Documentation was either non-existant or sparse at best. Fighting through it did teach me a lot, but it almost cost me my job due to the time taken. A tutorial for this subject would have taught me the same amount without endangering my steak budget.
+Personally, I found it extremely challenging to put together the pieces of **GAE** and **OAuth 2.0**, and then connect to a **RESTful API**. Documentation was either non-existant or sparse at best. Fighting through it did teach me a lot, but it almost cost me my job due to the time taken. A tutorial for this subject would have taught me the same amount without endangering my steak budget.
 
 ## Installation
 
-We're going to set up the app on a local development server, and as such will be using `http://localhost:8080` as a redirect uri. NOTE: this isn't best practice and should **never** be used in production. I am doing it here because it's the easiest way to educate new programmers how all the parts work together.
+We're going to set up the app on the [Python Development Server](https://developers.google.com/appengine/docs/python/tools/devserver), and as such will be using `http://localhost:8080` as a redirect URI. NOTE: this isn't best practice and should **never** be used in production. I am doing it here because it's the easiest way to educate new programmers how all the parts work together.
 
-If you are already using `http://localhost:8080` for something, swap this value out for whatever Google AppEngine Launcher sets the port as.
+If you are already using `http://localhost:8080` for something, swap this out for another `port` value.
 
-**1.** Download and install the **Google AppEngine Launcher** so that you can set this up on a local development server.
+**1.** Download and install the [Python Development Server](https://developers.google.com/appengine/docs/python/tools/devserver) so that you can set this up on a locally.
 
 **2.** Run `git clone git@github.com:bengrunfeld/gae-rest-oauth2-skeleton.git` wherever you want this to live
 
-**3.** Go to Github and register a new application: `Github -> Settings -> Applications -> Register new application`.
+**3.** Go to Github and register a new application: *Github -> Settings -> Applications -> Register new application*.
 
 **4.** Copy the `Client ID` and `Client Secret`, and set the `Authorization callback URL` to `http://localhost:8080`
 
@@ -36,12 +36,14 @@ It needs to have the following format:
 
 **6.** Paste the `Client ID` and `Client Secret` into their respective places, and paste `http://localhost:8080` into `redirect_urls`. The square brackets are necessary.
 
-This next step requires **VirtualEnv**, or preferably **VirtualEnvWrapper**, as it sets up 3rd party Python libraries not supported by Google AppEngine. 
+This next step requires **Virtualenv**, or preferably **VirtualenvWrapper**, as it sets up 3rd party Python libraries not supported by Google AppEngine. 
 
-**7.** Activate your respective VirtualEnv or VirtualEnvWrapper and `pip install httplib2` and `pip install oauth2client`. Then `pip show` both those packages and copy their locations
+**7.** Activate your respective Virtualenv or VirtualenvWrapper and `pip install httplib2` and `pip install oauth2client`. Then `pip show` both those packages and copy their locations.
 
 **8.** Create a `lib` directory inside the project directory and create symlinks to the packages with `ln -s path-to-location/httplib2` and `ln -s path-to-location/oauth2client`.
- 
+
+In addition to `sys.path.append("lib")`, these 2 steps allow you to `import` 3rd party libraries not supported by Google. 
+
 **9.** Go to Google AppEngine Launcher and add the project using `File -> Add Existing Application`. Navigate to the project directory, and make sure that the value for `port` is `8080` (unless you're using it for something else). Hit `Run`. Open up the Logs to see what's going on.
 
 ## Usage
@@ -71,4 +73,4 @@ This next step requires **VirtualEnv**, or preferably **VirtualEnvWrapper**, as 
 
 ## I want to leave a comment
 
-Write something on Github or hit me up on Twitter: [@bengrunfeld](https://twitter.com/bengrunfeld). Please **&#9734; Star &#9734;** this project if you like it.
+Write something on Github or hit me up on Twitter: [@bengrunfeld](https://twitter.com/bengrunfeld). Please **&#9734;Star&#9734;** this project if you like it.
