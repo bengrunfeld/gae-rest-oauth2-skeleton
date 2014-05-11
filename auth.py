@@ -48,6 +48,14 @@ def get_user_name():
     return result['login']
 
 
+def _get_storage_object():
+    """Return a storage object from the StorageByKeyName class"""
+
+    storage = StorageByKeyName(CredentialsModel, 'token', 'credentials')
+
+    return storage
+
+
 def _create_flow_object():
     """Check if client_secrets.json is populated"""
 
@@ -75,7 +83,7 @@ def get_access_token():
     """Used to check app activation and append token to urls"""
 
     # Check if access token is in storage
-    storage = StorageByKeyName(CredentialsModel, 'token', 'credentials')
+    storage = _get_storage_object()
 
     credentials = storage.get()
 
@@ -88,7 +96,7 @@ def get_access_token():
 def _delete_access_token():
     """Delete access token from storage"""
 
-    storage = StorageByKeyName(CredentialsModel, 'token', 'credentials')
+    storage = _get_storage_object()
     storage.delete()
 
 
@@ -165,18 +173,14 @@ class RetrieveToken(BaseHandler):
         credentials = flow.step2_exchange(code)
 
         # Store the access token, app is now activated
-        storage = StorageByKeyName(CredentialsModel, 'token', 'credentials')
+        storage = _get_storage_object()
         storage.put(credentials)
 
         # User is logged in
         self.session['logged_in'] = True
 
-        context = {
-            "username": get_user_name(),
-        }
-
-        # Tell user that the app is activated
-        self.render('index', context)
+        # Send user to UI
+        self.redirect('/app')
 
 
 class Logout(BaseHandler):
@@ -191,6 +195,19 @@ class Logout(BaseHandler):
         self.redirect('https://github.com/logout')
 
 
+class ShowFrontEnd(BaseHandler):
+    """Show the user the UI"""
+
+    def get(self):
+
+        context = {
+            "username": get_user_name(),
+        }
+
+        # Tell user that the app is activated
+        self.render('index', context)
+
+
 config = config()
 
 app = webapp2.WSGIApplication([
@@ -198,4 +215,5 @@ app = webapp2.WSGIApplication([
     ('/auth', AuthUser),
     ('/code', RetrieveToken),
     ('/logout', Logout),
+    ('/app', ShowFrontEnd),
 ], config=config, debug=True)

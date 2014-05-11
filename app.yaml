@@ -15,4 +15,4 @@ handlers:
   static_dir: static
 
 - url: /.*
-  script: auth.application
+  script: auth.app
