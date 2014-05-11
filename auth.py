@@ -26,7 +26,6 @@ from config import config
 from model import CredentialsModel
 
 
-GITHUB_ORGS_MEMBER_URL = 'https://api.github.com/user/orgs'
 GITHUB_API_URL = 'https://api.github.com'
 
 
@@ -173,12 +172,11 @@ class RetrieveToken(BaseHandler):
         self.session['logged_in'] = True
 
         context = {
-            "access_token": credentials.access_token,
             "username": get_user_name(),
         }
 
         # Tell user that the app is activated
-        self.render('login', context)
+        self.render('index', context)
 
 
 class Logout(BaseHandler):
