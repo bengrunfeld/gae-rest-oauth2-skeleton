@@ -191,6 +191,10 @@ class Logout(BaseHandler):
         # Delete session vars
         self.session.clear()
 
+        # Delete credentials in Storage
+        storage = _get_storage_object()
+        storage.delete()
+
         # Redirect to Github logout
         self.redirect('https://github.com/logout')
 
