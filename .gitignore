@@ -1,6 +1,6 @@
 *.pyc
-.*py.swp
-.*cron.yaml.swp
+.*.swp
 .DS_Store
 .build
 lib
+.ropeproject/
