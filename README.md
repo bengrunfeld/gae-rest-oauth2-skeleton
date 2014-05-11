@@ -1,50 +1,74 @@
-# Google Flow Skeleton on GAE
+# Google AppEngine REST OAuth2 Skeleton
 
-This is a full example of the use of Google's Flow object to take a user
-through the OAuth 2.0 process. 
+This is a skeleton app designed for Google AppEngine that illustrates how to go through the OAuth 2.0 process and connect to a RESTful API like GitHub's.
 
-A great API to test it with is [Github's](https://developer.github.com/v3/).
+## Background
 
-## Google Flow Docs
+Personally, I found it extremely challenging to put together the pieces of GAE and OAuth 2.0, and then connect to a RESTful app. Documentation was either non-existant or sparse at best. Fighting through it did teach me a lot, but it almost cost me my job due to the time taken. A tutorial for this subject would have taught me the same amount without endangering my steak budget.
 
-Enough with the read'ie read'ie. Show me the docs and I'll figure it out by
-myself. [docs](https://developers.google.com/api-client-library/python/guide/aaa_oauth#flows)
+## Installation
 
-## Setup
+We're going to set up the app on a local development server, and as such will be using `http://localhost:8080` as a redirect uri. NOTE: this isn't best practice and should **never** be used in production. I am doing it here because it's the easiest way to educate new programmers how all the parts work together.
 
-1. Enter secret information into `client_secrets.json`
-2. Add `client_secrets.json` to your `.gitignore` file
-3. Make sure you add the needed 3rd party libraries to your GAE app somehow
-4. Go into `auth.py` and update the `scope` and `redirect_url` on line `33`
-5. Build out the rest of your program
+If you are already using `http://localhost:8080` for something, swap this value out for whatever Google AppEngine Launcher sets the port as.
 
-## What are Google Flows?
+**1.** Download and install the **Google AppEngine Launcher** so that you can set this up on a local development server.
 
-According to Google: 
+**2.** Run `git clone git@github.com:bengrunfeld/gae-rest-oauth2-skeleton.git` wherever you want this to live
 
-> The purpose of a Flow class is to acquire credentials that authorize your 
-application access to user data.
+**3.** Go to Github and register a new application: `Github -> Settings -> Applications -> Register new application`.
 
-A simpler explanation would be that Google Flows are a set of functions that
-take a user through the steps of the OAuth 2.0 process.
+**4.** Copy the `Client ID` and `Client Secret`, and set the `Authorization callback URL` to `http://localhost:8080`
 
-Abstracting the workflow like this means that the programmer doesn't have to
-worry about the nuts and bolts of the process, e.g. swapping the temporary code
-for an access token.
+**5.** Create a file in the project directory called `client_secrets.json`
 
-## So why create a skeleton of the workflow?
+It needs to have the following format:
 
-Oh boy, there are a couple of answers to this one...
+    {
+      "web": {
+        "client_id": "",
+        "client_secret": "",
+        "redirect_uris": [""],
+        "auth_uri": "https://github.com/login/oauth/authorize",
+        "token_uri": "https://github.com/login/oauth/access_token"
+      }
+    }
 
-* Putting the pieces together is sometimes difficult and time consuming
-* Now you can learn from an example that works
-* Don't set it up from scratch every time you create a new app that uses OAuth
-* So Google can see how *bling mah shit is*
+**6.** Paste the `Client ID` and `Client Secret` into their respective places, and paste `http://localhost:8080` into `redirect_urls`. The square brackets are necessary.
 
-## Upcoming changes
+This next step requires **VirtualEnv**, or preferably **VirtualEnvWrapper**, as it sets up 3rd party Python libraries not supported by Google AppEngine. 
 
-I'll set this up on appspot so you can see that it actually works. 
+**7.** Activate your respective VirtualEnv or VirtualEnvWrapper and `pip install httplib2` and `pip install oauth2client`. Then `pip show` both those packages and copy their locations
+
+**8.** Create a `lib` directory inside the project directory and create symlinks to the packages with `ln -s path-to-location/httplib2` and `ln -s path-to-location/oauth2client`.
+ 
+**9.** Go to Google AppEngine Launcher and add the project using `File -> Add Existing Application`. Navigate to the project directory, and make sure that the value for `port` is `8080` (unless you're using it for something else). Hit `Run`. Open up the Logs to see what's going on.
+
+## Usage
+
+1. Navigate to `http://localhost:8080`.
+2. The app will take you to a dummy Google Accounts login screen. Just hit `Login`.
+3. You will be redirected to the Github login page. Enter your credentials and hit `Sign in`.
+4. You will be redirected to an **Authorize Application** page. Don't worry, the only person you're giving permissions to is yourself, since you created the Github app in the steps above. Go ahead and authorize the application.
+5. You'll be taken to the UI of the app. If your username shows up correctly, it worked. Go pour one out.
+6. **IMPORTANT:** If you want to test the app with another user, hit the `Logout` button at the top right of the page. This deletes the access token for the existing user stored in Storage.
+
+## Links to relevant Google Documentation
+
+**Google: OAuth 2.0** – [https://developers.google.com/api-client-library/python/guide/aaa_oauth](https://developers.google.com/api-client-library/python/guide/aaa_oauth)
+
+**client_secrets.json** – [https://developers.google.com/api-client-library/python/guide/aaa_client_secrets](https://developers.google.com/api-client-library/python/guide/aaa_client_secrets)
+
+**StorageByKeyName** – At bottom of doc. [https://developers.google.com/api-client-library/python/guide/google_app_engine](https://developers.google.com/api-client-library/python/guide/google_app_engine)
+
+**URL Fetch** – [https://developers.google.com/appengine/docs/python/urlfetch/](https://developers.google.com/appengine/docs/python/urlfetch/)
+
+**Google Users Service** – [https://developers.google.com/appengine/docs/python/gettingstartedpython27/usingusers](https://developers.google.com/appengine/docs/python/gettingstartedpython27/usingusers)
+
+**Webapp2 Sessions** – [https://webapp-improved.appspot.com/api/webapp2_extras/sessions.html](https://webapp-improved.appspot.com/api/webapp2_extras/sessions.html)
+
+**Github API** – [https://developer.github.com/v3/](https://developer.github.com/v3/)
 
 ## I want to leave a comment
 
-Write something on Github or hit me up on Twitter: [@bengrunfeld](https://twitter.com/bengrunfeld) 
+Write something on Github or hit me up on Twitter: [@bengrunfeld](https://twitter.com/bengrunfeld). Please **&#9734; Star &#9734;** this project if you like it.
